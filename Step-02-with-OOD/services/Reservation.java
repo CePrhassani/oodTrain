@@ -16,4 +16,16 @@ public class Reservation {
     public double totalPrice(){
         return room.price * nights;
     }
+    private PaymentProcessor paymentProcessor;
+private MessageSender messageSender;
+
+public void setServices(PaymentProcessor paymentProcessor, MessageSender messageSender) {
+    this.paymentProcessor = paymentProcessor;
+    this.messageSender = messageSender;
+}
+
+public void confirm(String customerEmail) {
+    paymentProcessor.payByCard(totalPrice());
+    messageSender.send(customerEmail, "Reservation confirmed successfully!");
+}
 }

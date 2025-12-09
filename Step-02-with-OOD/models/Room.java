@@ -10,4 +10,7 @@ public class Room {
         this.type = type;
         this.price = price;
     }
+    public double getPrice() {
+    return this.price;
+}
 }

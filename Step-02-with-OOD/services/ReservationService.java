@@ -1,6 +1,9 @@
 package services;
-
 import constants.Notifier;
+import services.MessageSender;
+import services.EmailSender;
+import services.SmsSender;
+
 import constants.PaymentMethods;
 
 public class ReservationService {
@@ -10,13 +13,13 @@ public class ReservationService {
     public void makeReservation(Reservation res, PaymentMethods paymentType, Notifier notifier) {
         System.out.println("Processing reservation for " + res.customer.name);
 
-        applyCityDiscount(res);       // 🔹 منطق تخفیف جدا شد
-        handlePayment(paymentType, res.totalPrice()); // 🔹 منطق پرداخت جدا شد
-        printInvoice(res);            // 🔹 چاپ فاکتور جدا شد
-        notifyCustomer(notifier, res.customer.email); // 🔹 اطلاع‌رسانی جدا شد
+        applyCityDiscount(res);       
+        handlePayment(paymentType, res.totalPrice()); 
+        printInvoice(res);            
+        notifyCustomer(notifier, res.customer.email); 
     }
 
-    // ------------------------------
+    
     private void applyCityDiscount(Reservation res) {
         if (res.customer.city.equals("Paris")) {
             System.out.println("Apply city discount for Paris!");
@@ -41,17 +44,21 @@ public class ReservationService {
         System.out.println("-------------------");
     }
 
-    private void notifyCustomer(Notifier notifier, String to) {
-        switch (notifier) {
-            case EMAIL -> {
-                messageSender = new EmailSender();
-                ((EmailSender) messageSender).sendEmail(to, "Your reservation confirmed!");
-            }
-            case SMS -> {
-                messageSender = new SmsSender();
-                ((SmsSender) messageSender).sendSMS(to, "Reservation confirmed!");
-            }
-            default -> System.out.println("No message provider.");
-        }
+    private MessageSender messageSender;
+
+public void notifyCustomer(Notifier notifier, String to) {
+    switch (notifier) {
+        case EMAIL:
+            messageSender = new EmailSender();
+            break;
+        case SMS:
+            messageSender = new SmsSender();
+            break;
+        default:
+            System.out.println("Notifier type not supported yet.");
+            return;
     }
+    messageSender.send(to, "Your reservation has been confirmed.");
+}
+
 }
