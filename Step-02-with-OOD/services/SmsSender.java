@@ -1,10 +1,8 @@
 package services;
 
-class SmsSender implements MessageSender{
-    public void sendEmail(String to, String message){
-        
-    }
-    public void sendSMS (String to, String message){
-        System.out.println("Sending SMS to " + to + ": " + message);
+public class SmsSender implements MessageSender {
+    @Override
+    public void send(String to, String message) {
+        System.out.println("📱 SMS sent to " + to + ": " + message);
     }
 }
