@@ -1,5 +1,8 @@
 package constants;
 
 public enum PaymentMethods {
-    PAYPAL,CARD,CASH,ONSITE
+    CARD,
+    PAYPAL,
+    CASH,
+    ONSITE 
 }
